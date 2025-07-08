@@ -8,10 +8,6 @@ use Saloon\Http\Connector;
 
 abstract class Canva extends Connector
 {
-
-    private ?string $codeVerifier = null;
-    private ?string $codeChallenge = null;
-
     /**
      * The default OAuth configuration for the Canva API.
      *
