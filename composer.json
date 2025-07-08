@@ -1,0 +1,21 @@
+{
+    "require": {
+        "saloonphp/saloon": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Canva\\": "src/"
+        }
+    },
+    "require-dev": {
+        "laravel/pint": "^1.23",
+        "pestphp/pest": "^3.8",
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
