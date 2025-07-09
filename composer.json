@@ -1,11 +1,8 @@
 {
+    "name": "betterworldcollective/canva-php-sdk",
     "require": {
+        "php": "^8.2",
         "saloonphp/saloon": "^3.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Canva\\": "src/"
-        }
     },
     "require-dev": {
         "laravel/pint": "^1.23",
@@ -13,9 +10,10 @@
         "phpstan/phpstan": "^2.1",
         "rector/rector": "^2.1"
     },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Canva\\": "src/"
         }
     },
     "scripts": {
@@ -31,5 +29,10 @@
         "analyse": [
             "./vendor/bin/phpstan analyse --memory-limit=-1"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }

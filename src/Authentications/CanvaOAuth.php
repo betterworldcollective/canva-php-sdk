@@ -44,17 +44,6 @@ class CanvaOAuth extends Canva
     }
 
     /**
-     * Generate a random code verifier for PKCE
-     *
-     * @return string
-     */
-    private function generateCodeVerifier(): string
-    {
-        $randomBytes = random_bytes(32);
-        return rtrim(strtr(base64_encode($randomBytes), '+/', '-_'), '=');
-    }
-
-    /**
      * Generate code challenge from code verifier using SHA256
      *
      * @param string $codeVerifier
