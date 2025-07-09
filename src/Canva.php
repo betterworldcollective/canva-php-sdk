@@ -2,25 +2,10 @@
 
 namespace Canva;
 
-use Canva\Authentications\CanvaOAuth;
-use Canva\Authentications\CanvaToken;
 use Saloon\Http\Connector;
 
 abstract class Canva extends Connector
 {
-    /**
-     * The default OAuth configuration for the Canva API.
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     * @return CanvaOAuth
-     */
-    public static function oauth(string $clientId, string $clientSecret, string $redirectUri): CanvaOAuth
-    {
-        return new CanvaOAuth($clientId, $clientSecret, $redirectUri);
-    }
-
     /**
      * The base URL for the Canva API.
      *
