@@ -17,5 +17,19 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
+    },
+    "scripts": {
+        "refactor": [
+            "./vendor/bin/rector process"
+        ],
+        "format": [
+            "./vendor/bin/pint --dirty"
+        ],
+        "format:test": [
+            "./vendor/bin/pint --dirty --test -v"
+        ],
+        "analyse": [
+            "./vendor/bin/phpstan analyse --memory-limit=-1"
+        ]
     }
 }
