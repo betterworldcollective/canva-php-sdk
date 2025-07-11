@@ -16,6 +16,11 @@
             "Canva\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Canva\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
         "refactor": [
             "./vendor/bin/rector process"
@@ -28,6 +33,9 @@
         ],
         "analyse": [
             "./vendor/bin/phpstan analyse --memory-limit=-1"
+        ],
+        "test": [
+            "./vendor/bin/pest"
         ]
     },
     "config": {
