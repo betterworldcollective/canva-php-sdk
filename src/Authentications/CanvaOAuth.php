@@ -3,18 +3,14 @@
 namespace Canva\Authentications;
 
 use Canva\Canva;
-use Saloon\Helpers\OAuth2\OAuthConfig;
-use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
-use Saloon\Http\OAuth2\GetAccessTokenRequest;
-use Saloon\Http\Request;
-use Saloon\Enums\Method;
 use Saloon\Contracts\Body\HasBody;
+use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Traits\Body\HasFormBody;
-use Saloon\Traits\Plugins\AcceptsJson;
+use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 
-class CanvaOAuth extends Canva
+class CanvaOAuth extends Canva implements HasBody
 {
-    use AuthorizationCodeGrant;
+    use AuthorizationCodeGrant, HasFormBody;
 
     private ?string $codeVerifier = null;
     private ?string $codeChallenge = null;
