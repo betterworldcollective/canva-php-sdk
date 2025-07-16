@@ -46,7 +46,7 @@ function generateCodeVerifier()
 }
 ```
 
-## After the user grants access, they will be redirected back to your specified redirect URI with a `code` parameter. You can then exchange this code for an access token.
+After the user grants access, they will be redirected back to your specified redirect URI with a `code` parameter. You can then exchange this code for an access token.
 
 ```php
 $canva = new CanvaOAuth(
