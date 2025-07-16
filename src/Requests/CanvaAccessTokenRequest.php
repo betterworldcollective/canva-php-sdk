@@ -14,6 +14,13 @@ class CanvaAccessTokenRequest extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * Create a new CanvaAccessTokenRequest instance.
+     *
+     * @param string $code The authorization code received from the OAuth flow.
+     * @param OAuthConfig $oauthConfig The OAuth configuration containing client ID, secret, and redirect URI.
+     * @param string $codeVerifier The code verifier used in the PKCE flow.
+     */
     public function __construct(
         protected string $code,
         protected OAuthConfig $oauthConfig,
@@ -22,11 +29,21 @@ class CanvaAccessTokenRequest extends Request implements HasBody
         //
     }
 
+    /**
+     * Resolve the endpoint for the request.
+     *
+     * @return string
+     */
     public function resolveEndpoint(): string
     {
         return 'https://api.canva.com/rest/v1/oauth/token'; // Double-check Canva’s docs for exact URL
     }
 
+    /**
+     * Get the headers for the request.
+     *
+     * @return array<string, string>
+     */
     protected function defaultHeaders(): array
     {
         return [
@@ -35,6 +52,11 @@ class CanvaAccessTokenRequest extends Request implements HasBody
         ];
     }
 
+    /**
+     * Get the body of the request.
+     *
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return [

@@ -16,6 +16,14 @@ class CanvaOAuth extends Canva
     private ?string $codeVerifier = null;
     private ?string $codeChallenge = null;
 
+    /**
+     * Create a new CanvaOAuth instance.
+     *
+     * @param string $clientId The client ID for the OAuth application.
+     * @param string $clientSecret The client secret for the OAuth application.
+     * @param string $redirectUri The redirect URI for the OAuth application.
+     * @param string|null $codeVerifier Optional code verifier for PKCE flow.
+     */
     public function __construct(
         string $clientId,
         string $clientSecret,
@@ -33,11 +41,23 @@ class CanvaOAuth extends Canva
         }
     }
 
+    /**
+     * Resolve the base URL for the Canva API.
+     *
+     * @return OAuthConfig
+     */
     protected function defaultOauthConfig(): OAuthConfig
     {
         return OAuthConfig::make()->setAuthorizeEndpoint('https://www.canva.com/api/oauth/authorize');
     }
 
+    /**
+     * Resolve the access token request for the OAuth flow.
+     *
+     * @param string $code The authorization code received from the OAuth flow.
+     * @param OAuthConfig $oauthConfig The OAuth configuration containing client ID, secret, and redirect URI.
+     * @return Request
+     */
     protected function resolveAccessTokenRequest(string $code, OAuthConfig $oauthConfig): Request
     {
         if (empty($this->codeVerifier)) {
@@ -76,6 +96,11 @@ class CanvaOAuth extends Canva
         );
     }
 
+    /**
+     * Set the code verifier and generate the code challenge.
+     *
+     * @param string $codeVerifier The code verifier used in the PKCE flow.
+     */
     public function setCodeChallenge(string $codeVerifier): void
     {
         $this->codeVerifier = $codeVerifier;
