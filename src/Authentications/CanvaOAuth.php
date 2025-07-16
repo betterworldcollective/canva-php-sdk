@@ -22,23 +22,17 @@ class CanvaOAuth extends Canva
      * @param string $clientId The client ID for the OAuth application.
      * @param string $clientSecret The client secret for the OAuth application.
      * @param string $redirectUri The redirect URI for the OAuth application.
-     * @param string|null $codeVerifier Optional code verifier for PKCE flow.
      */
     public function __construct(
         string $clientId,
         string $clientSecret,
         string $redirectUri,
-        ?string $codeVerifier = null
     ) {
         $this->oauthConfig()
             ->setClientId($clientId)
             ->setDefaultScopes(['asset:read', 'asset:write', 'design:content:read', 'design:content:write', 'design:meta:read', 'brandtemplate:content:read', 'brandtemplate:meta:read', 'profile:read'])
             ->setClientSecret($clientSecret)
             ->setRedirectUri($redirectUri);
-
-        if ($codeVerifier !== null) {
-            $this->setCodeChallenge($codeVerifier);
-        }
     }
 
     /**
@@ -105,5 +99,17 @@ class CanvaOAuth extends Canva
     {
         $this->codeVerifier = $codeVerifier;
         $this->codeChallenge = $this->generateCodeChallenge($this->codeVerifier);
+    }
+
+    /**
+     * Get the code verifier used in the PKCE flow.
+     *
+     * @return self
+     */
+    public function setCodeVerifier(string $codeVerifier): self
+    {
+        $this->setCodeChallenge($codeVerifier);
+
+        return $this;
     }
 }

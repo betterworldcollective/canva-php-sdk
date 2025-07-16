@@ -29,7 +29,7 @@ $canva = new CanvaOAuth(
   redirectUri: $config["redirect_uri"]
 );
 
-$canva->setCodeChallenge($codeVerifier); // Store this somewhere securely
+$canva->setCodeChallenge($codeVerifier); 
 
 $authorizationUrl = $canva->getAuthUrl();
 ```
@@ -53,8 +53,9 @@ $canva = new CanvaOAuth(
   clientId: $config["client_id"],
   clientSecret: $config["client_secret"],
   redirectUri: $config["redirect_uri"],
-  codeVerifier: $codeVerifier // The code verifier you generated earlier
 );
+
+$canva->setCodeVerifier($codeVerifier); // Use the same code verifier you generated earlier
 
 // `code` and `state` are parameters returned by Canva after the user grants access
 $authenticator = $canva->getAccessToken($request["code"], $request["state"]); // Store values securely
