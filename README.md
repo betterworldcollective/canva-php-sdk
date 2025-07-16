@@ -16,12 +16,22 @@ To begin the OAuth flow, you'll need to redirect your user to an authorization U
 ```php
 use Canva\Authentications\CanvaOAuth;
 
-$clientId = 'YOUR_CANVA_CLIENT_ID';
-$clientSecret = 'YOUR_CANVA_SECRET_KEY';
-$callbackUrl = 'https://app-callback-url/auth/callback';
+$config = [
+  "client_id" => "YOUR_CLIENT_ID",
+  "client_secret" => "YOUR_CLIENT_SECRET",
+  "redirect_uri" => "YOUR_REDIRECT_URI",
+];
 
-// Generate the Blackbaud OAuth login URL
-$authUrl = CanvaOAuth::getAuthUrl($clientId, $clientSecret, $callbackUrl, $codeVerifier);
+// Generate the Canva OAuth login URL
+$canva = new CanvaOAuth(
+  clientId: $config["client_id"],
+  clientSecret: $config["client_secret"],
+  redirectUri: $config["redirect_uri"]
+);
+
+$canva->setCodeChallenge($codeVerifier); // Store this somewhere securely
+
+$authorizationUrl = $canva->getAuthUrl();
 ```
 
 You'll need to handle your own code verifier. The `$codeVerifier` is a random string that you generate and store securely. It is used to verify the integrity of the authorization request.
@@ -34,4 +44,18 @@ function generateCodeVerifier()
 
   return rtrim(strtr(base64_encode($randomBytes), "+/", "-_"), "=");
 }
+```
+
+## After the user grants access, they will be redirected back to your specified redirect URI with a `code` parameter. You can then exchange this code for an access token.
+
+```php
+$canva = new CanvaOAuth(
+  clientId: $config["client_id"],
+  clientSecret: $config["client_secret"],
+  redirectUri: $config["redirect_uri"],
+  codeVerifier: $codeVerifier // The code verifier you generated earlier
+);
+
+// `code` and `state` are parameters returned by Canva after the user grants access
+$authenticator = $canva->getAccessToken($request["code"], $request["state"]); // Store values securely
 ```
