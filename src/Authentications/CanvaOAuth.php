@@ -3,14 +3,15 @@
 namespace Canva\Authentications;
 
 use Canva\Canva;
+use Canva\Requests\CanvaAccessTokenRequest;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Helpers\OAuth2\OAuthConfig;
-use Saloon\Traits\Body\HasFormBody;
+use Saloon\Http\Request;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 
-class CanvaOAuth extends Canva implements HasBody
+class CanvaOAuth extends Canva
 {
-    use AuthorizationCodeGrant, HasFormBody;
+    use AuthorizationCodeGrant;
 
     private ?string $codeVerifier = null;
     private ?string $codeChallenge = null;
@@ -34,9 +35,16 @@ class CanvaOAuth extends Canva implements HasBody
 
     protected function defaultOauthConfig(): OAuthConfig
     {
-        return OAuthConfig::make()
-            ->setTokenEndpoint('https://api.canva.com/rest/v1/oauth/token')
-            ->setAuthorizeEndpoint('https://www.canva.com/api/oauth/authorize');
+        return OAuthConfig::make()->setAuthorizeEndpoint('https://www.canva.com/api/oauth/authorize');
+    }
+
+    protected function resolveAccessTokenRequest(string $code, OAuthConfig $oauthConfig): Request
+    {
+        if (empty($this->codeVerifier)) {
+            throw new \InvalidArgumentException('Code verifier must not be empty when using PKCE.');
+        }
+
+        return new CanvaAccessTokenRequest($code, $oauthConfig, $this->codeVerifier);
     }
 
     /**
