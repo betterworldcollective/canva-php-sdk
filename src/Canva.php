@@ -2,6 +2,7 @@
 
 namespace Canva;
 
+use Canva\Authentications\CanvaOAuth;
 use Saloon\Http\Connector;
 
 abstract class Canva extends Connector
@@ -27,5 +28,10 @@ abstract class Canva extends Connector
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];
+    }
+
+    public static function oauth(string $clientId, string $clientSecret, string $redirectUri): self
+    {
+       return new CanvaOAuth($clientId, $clientSecret, $redirectUri);
     }
 }
