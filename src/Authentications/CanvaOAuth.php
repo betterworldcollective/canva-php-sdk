@@ -83,6 +83,7 @@ class CanvaOAuth extends Canva
     {
         // Get the base authorization URL without scopes
         return $this->getAuthorizationUrl(
+            state: $state,
             additionalQueryParameters: [
                 'code_challenge' => $this->codeChallenge,
                 'code_challenge_method' => 'S256'
