@@ -46,9 +46,14 @@ class CanvaAccessTokenRequest extends Request implements HasBody
      */
     protected function defaultHeaders(): array
     {
+        $credentials = base64_encode(
+            $this->oauthConfig->getClientId() . ':' . $this->oauthConfig->getClientSecret()
+        );
+
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/x-www-form-urlencoded',
+            'Authorization' => 'Basic ' . $credentials,
         ];
     }
 
@@ -59,13 +64,19 @@ class CanvaAccessTokenRequest extends Request implements HasBody
      */
     protected function defaultBody(): array
     {
-        return [
+        $body = [
             'grant_type' => 'authorization_code',
             'client_id' => $this->oauthConfig->getClientId(),
             'client_secret' => $this->oauthConfig->getClientSecret(),
             'redirect_uri' => $this->oauthConfig->getRedirectUri(),
             'code' => $this->code,
-            'code_verifier' => $this->codeVerifier,
         ];
+
+        // Only include code_verifier if using PKCE
+        if ($this->codeVerifier !== null) {
+            $body['code_verifier'] = $this->codeVerifier;
+        }
+
+        return $body;
     }
 }

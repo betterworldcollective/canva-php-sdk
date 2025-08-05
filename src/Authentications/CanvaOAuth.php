@@ -79,14 +79,15 @@ class CanvaOAuth extends Canva
      * @param string|null $state
      * @return string
      */
-    public function getAuthUrl(?string $state = null): string
+    public function getAuthUrl(?string $state = null, array $additionalQuery = []): string
     {
         // Get the base authorization URL without scopes
         return $this->getAuthorizationUrl(
             state: $state,
             additionalQueryParameters: [
                 'code_challenge' => $this->codeChallenge,
-                'code_challenge_method' => 'S256'
+                'code_challenge_method' => 'S256',
+                ...$additionalQuery,
             ]
         );
     }
