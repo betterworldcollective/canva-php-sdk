@@ -74,9 +74,10 @@ class CanvaOAuth extends Canva
     }
 
     /**
-     * Get the authorization URL with PKCE parameters
+     * Get the authorization URL for the OAuth flow.
      *
-     * @param string|null $state
+     * @param string|null $state Optional state parameter to maintain state between request and callback.
+     * @param array<string, mixed> $additionalQuery Additional query parameters to include in the authorization URL.
      * @return string
      */
     public function getAuthUrl(?string $state = null, array $additionalQuery = []): string
