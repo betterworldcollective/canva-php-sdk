@@ -16,6 +16,5 @@ composer.lock
 /.vscode
 
 # Misc
-phpunit.xml
 phpstan.neon
 /coverage
