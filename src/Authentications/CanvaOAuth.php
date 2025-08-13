@@ -3,8 +3,7 @@
 namespace Canva\Authentications;
 
 use Canva\Canva;
-use Canva\Requests\CanvaAccessTokenRequest;
-use Saloon\Contracts\Body\HasBody;
+use Canva\Requests\OAuth\CanvaAccessTokenRequest;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Request;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;

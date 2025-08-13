@@ -1,6 +1,6 @@
 <?php
 
-namespace Canva\Requests;
+namespace Canva\Requests\OAuth;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
