@@ -60,3 +60,35 @@ $canva->setCodeVerifier($codeVerifier); // Use the same code verifier you genera
 // `code` and `state` are parameters returned by Canva after the user grants access
 $authenticator = $canva->getAccessToken($request["code"], $request["state"]); // Store values securely
 ```
+
+## Token Management
+
+### Revoking Access Tokens
+
+The SDK provides functionality to revoke access tokens when they're no longer needed or when you want to invalidate user access. This is useful for:
+
+- Logging users out of your application
+- Revoking access when users remove your integration
+- Cleaning up expired or compromised tokens
+- Implementing security measures
+
+```php
+use Canva\Requests\OAuth\RevokeAccessTokenRequest;
+use Saloon\Helpers\OAuth2\OAuthConfig;
+
+// Create OAuth config (you can reuse the same config from authentication)
+$oauthConfig = new OAuthConfig(
+    clientId: $config["client_id"],
+    clientSecret: $config["client_secret"],
+    redirectUri: $config["redirect_uri"]
+);
+
+// Revoke a specific access token
+$revokeRequest = new RevokeAccessTokenRequest(
+    accessToken: $userAccessToken, // The token you want to revoke
+    oauthConfig: $oauthConfig
+);
+
+// Send the request using Saloon
+$response = $revokeRequest->send();
+```
