@@ -92,3 +92,29 @@ $revokeRequest = new RevokeAccessTokenRequest(
 // Send the request using Saloon
 $response = $revokeRequest->send();
 ```
+
+### Getting User Profile Information
+
+The SDK allows you to retrieve user profile information using the access token obtained during OAuth authentication. This is useful for:
+
+- Displaying user information in your application
+- Personalizing the user experience
+- Storing user details in your database
+- Building user dashboards
+
+```php
+use Canva\Requests\User\UserProfileRequest;
+
+// Get user profile information using the access token
+$userProfileRequest = new UserProfileRequest(
+    accessToken: $userAccessToken // The access token from OAuth flow
+);
+
+// Send the request using Saloon
+$response = $userProfileRequest->send();
+
+// The response contains user profile data
+$userProfile = $response->json();
+```
+
+**Note**: Currently, this endpoint returns the display name of the user account associated with the provided access token. More user information is expected to be included in future API updates.

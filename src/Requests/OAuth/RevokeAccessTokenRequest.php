@@ -2,16 +2,14 @@
 
 namespace Canva\Requests\OAuth;
 
-use DateTime;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasFormBody;
-use Saloon\Traits\Body\HasJsonBody;
 
 /**
- * revokeTokens
+ * RevokeAccessTokenRequest
  *
  * Revoke an access token or a refresh token.
  *
@@ -48,7 +46,7 @@ class RevokeAccessTokenRequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "https://api.canva.com/rest/v1/oauth/revoke";
+        return "/v1/oauth/revoke";
     }
 
 
