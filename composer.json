@@ -1,5 +1,7 @@
 {
     "name": "betterworldcollective/canva-php-sdk",
+    "description": "PHP SDK for integrating with Canva's API",
+    "license": "MIT",
     "require": {
         "php": "^8.2",
         "saloonphp/saloon": "^3.0"
