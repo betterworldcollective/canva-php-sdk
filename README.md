@@ -147,3 +147,32 @@ $request = new CreateDesign([
     "title" => "My New Design",
 ]);
 ```
+
+### Create Design Export Job
+To create an export job for a design, you can use the `CreateExportJob` request. This allows you to specify the design ID and the desired export format.
+
+```php
+use Canva\Requests\Export\CreateExportJob;
+
+// Create an export job for a design
+// Refer to the Canva API documentation https://www.canva.dev/docs/connect/api-reference/exports/create-design-export-job/
+$request = new CreateExportJob([
+    "design_id" => "YOUR_DESIGN_ID", // Replace with your design ID
+    "format" => [
+        "type" => "png", // Specify the desired export format (e.g., png, pdf)
+    ]
+]);
+```
+
+
+### Get Design Export Job
+To check the status of an export job, you can use the `GetDesignExportJob`
+```php
+use Canva\Requests\Export\GetDesignExportJob;
+
+// Get the status of an export job
+// Refer to the Canva API documentation https://www.canva.dev/docs/connect/api-reference/exports/get-design-export-job/
+$request = new GetDesignExportJob(
+    exportId: "export_id" => "YOUR_EXPORT_JOB_ID", // Replace with your export job ID
+);
+```
