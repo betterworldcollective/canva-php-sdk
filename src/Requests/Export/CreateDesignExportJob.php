@@ -45,7 +45,11 @@ class CreateDesignExportJob extends Request implements HasBody
         return "/v1/exports";
     }
 
-
+    /**
+     * CreateDesignExportJob constructor.
+     *
+     * @param array<string, mixed> $properties
+     */
     public function __construct(protected array $properties)
     {
         // Ensure that required properties are set
@@ -58,6 +62,11 @@ class CreateDesignExportJob extends Request implements HasBody
         }
     }
 
+    /**
+     * Get the default body for the request.
+     *
+     * @return array<string, mixed>
+     */
     public function defaultBody(): array
     {
         return $this->properties;
