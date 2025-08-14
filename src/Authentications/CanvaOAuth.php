@@ -3,7 +3,7 @@
 namespace Canva\Authentications;
 
 use Canva\Canva;
-use Canva\Requests\OAuth\CanvaAccessTokenRequest;
+use Canva\Requests\OAuth\CanvaAccessToken;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Request;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
@@ -57,7 +57,7 @@ class CanvaOAuth extends Canva
             throw new \InvalidArgumentException('Code verifier must not be empty when using PKCE.');
         }
 
-        return new CanvaAccessTokenRequest($code, $oauthConfig, $this->codeVerifier);
+        return new CanvaAccessToken($code, $oauthConfig, $this->codeVerifier);
     }
 
     /**

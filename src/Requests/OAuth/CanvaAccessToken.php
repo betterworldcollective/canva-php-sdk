@@ -8,7 +8,7 @@ use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasFormBody;
 
-class CanvaAccessTokenRequest extends Request implements HasBody
+class CanvaAccessToken extends Request implements HasBody
 {
     use HasFormBody;
 

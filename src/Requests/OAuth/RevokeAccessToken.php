@@ -37,7 +37,7 @@ use Saloon\Traits\Body\HasFormBody;
  * they'll be blocked by Canva's [Cross-Origin Resource Sharing
  * (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) policy.
  */
-class RevokeAccessTokenRequest extends Request implements HasBody
+class RevokeAccessToken extends Request implements HasBody
 {
     use HasFormBody;
 

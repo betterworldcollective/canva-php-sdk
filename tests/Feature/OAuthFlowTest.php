@@ -3,9 +3,9 @@
 namespace Canva\Tests\Feature;
 
 use Canva\Authentications\CanvaOAuth;
-use Canva\Requests\OAuth\CanvaAccessTokenRequest;
-use Canva\Requests\OAuth\RevokeAccessTokenRequest;
-use Canva\Requests\User\UserProfileRequest;
+use Canva\Requests\OAuth\CanvaAccessToken;
+use Canva\Requests\OAuth\RevokeAccessToken;
+use Canva\Requests\User\UserProfile;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 
 beforeEach(function () {
@@ -43,17 +43,16 @@ test('complete OAuth flow', function () {
         ->setClientSecret($this->clientSecret)
         ->setRedirectUri($this->redirectUri);
 
-    $accessTokenRequest = new CanvaAccessTokenRequest($authCode, $oauthConfig, $codeVerifier);
+    $accessTokenRequest = new CanvaAccessToken($authCode, $oauthConfig, $codeVerifier);
 
-    expect($accessTokenRequest)->toBeInstanceOf(CanvaAccessTokenRequest::class);
+    expect($accessTokenRequest)->toBeInstanceOf(CanvaAccessToken::class);
     expect($accessTokenRequest->resolveEndpoint())->toBe('https://api.canva.com/rest/v1/oauth/token');
 
     // Step 6: Simulate having an access token and create user profile request
-    $accessToken = 'test_access_token_123';
-    $userProfileRequest = new UserProfileRequest($accessToken);
+    $userProfileRequest = new UserProfile();
 
-    expect($userProfileRequest)->toBeInstanceOf(UserProfileRequest::class);
-    expect($userProfileRequest->resolveEndpoint())->toBe('https://api.canva.com/rest/v1/users/me/profile');
+    expect($userProfileRequest)->toBeInstanceOf(UserProfile::class);
+    expect($userProfileRequest->resolveEndpoint())->toBe('/v1/users/me/profile');
 });
 
 test('PKCE flow', function () {

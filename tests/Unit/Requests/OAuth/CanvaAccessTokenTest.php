@@ -2,7 +2,7 @@
 
 namespace Canva\Tests\Unit\Requests\OAuth;
 
-use Canva\Requests\OAuth\CanvaAccessTokenRequest;
+use Canva\Requests\OAuth\CanvaAccessToken;
 use Saloon\Enums\Method;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 
@@ -15,7 +15,7 @@ beforeEach(function () {
         ->setClientSecret('test_client_secret')
         ->setRedirectUri('https://example.com/callback');
 
-    $this->request = new CanvaAccessTokenRequest($this->code, $this->oauthConfig, $this->codeVerifier);
+    $this->request = new CanvaAccessToken($this->code, $this->oauthConfig, $this->codeVerifier);
 });
 
 test('resolve endpoint', function () {
@@ -25,12 +25,7 @@ test('resolve endpoint', function () {
 });
 
 test('method is POST', function () {
-    // Access the protected property using reflection
-    $reflection = new \ReflectionClass($this->request);
-    $methodProperty = $reflection->getProperty('method');
-    $methodProperty->setAccessible(true);
-
-    $method = $methodProperty->getValue($this->request);
+    $method = $this->request->getMethod();
 
     expect($method)->toBe(Method::POST);
 });

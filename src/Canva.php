@@ -3,7 +3,9 @@
 namespace Canva;
 
 use Canva\Authentications\CanvaOAuth;
+use Saloon\Http\Auth\AccessTokenAuthenticator;
 use Saloon\Http\Connector;
+use DateTimeImmutable;
 
 abstract class Canva extends Connector
 {
@@ -14,7 +16,7 @@ abstract class Canva extends Connector
      */
    public function resolveBaseUrl(): string
     {
-        return 'https://www.canva.com/api/v1/';
+        return 'https://api.canva.com/rest/';
     }
 
     /**
@@ -33,5 +35,16 @@ abstract class Canva extends Connector
     public static function oauth(string $clientId, string $clientSecret, string $redirectUri): self
     {
        return new CanvaOAuth($clientId, $clientSecret, $redirectUri);
+    }
+
+    public function authenticateWithToken(string $token, ?string $refreshToken = null, ?DateTimeImmutable $expires_at = null): static
+    {
+        $authenticator = new AccessTokenAuthenticator(
+            $token,
+            $refreshToken,
+            $expires_at
+        );
+
+        return $this->authenticate($authenticator);
     }
 }

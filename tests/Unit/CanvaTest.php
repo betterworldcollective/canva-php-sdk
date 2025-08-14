@@ -13,7 +13,7 @@ test('base URL is correctly resolved', function () {
 
     $baseUrl = $canva->resolveBaseUrl();
     
-    expect($baseUrl)->toBe('https://www.canva.com/api/v1/');
+    expect($baseUrl)->toBe('https://api.canva.com/rest/');
 });
 
 test('default headers are correctly set', function () {

@@ -3,7 +3,7 @@
 namespace Canva\Tests\Unit\Authentications;
 
 use Canva\Authentications\CanvaOAuth;
-use Canva\Requests\OAuth\CanvaAccessTokenRequest;
+use Canva\Requests\OAuth\CanvaAccessToken;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 
 beforeEach(function () {

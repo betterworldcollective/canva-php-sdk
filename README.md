@@ -61,6 +61,15 @@ $canva->setCodeVerifier($codeVerifier); // Use the same code verifier you genera
 $authenticator = $canva->getAccessToken($request["code"], $request["state"]); // Store values securely
 ```
 
+## Using Access Tokens
+Once you have the access token, you can use it to make authenticated requests to the Canva API. The SDK provides a convenient way to include the access token in your requests.
+```php
+use Saloon\Http\Auth\AccessTokenAuthenticator;
+
+// Set up token configuration for requests
+$canva->authenticateWithToken($token, $refreshToken, $expiresAt);
+```
+
 ## Token Management
 
 ### Revoking Access Tokens
@@ -73,7 +82,7 @@ The SDK provides functionality to revoke access tokens when they're no longer ne
 - Implementing security measures
 
 ```php
-use Canva\Requests\OAuth\RevokeAccessTokenRequest;
+use Canva\Requests\OAuth\RevokeAccessToken;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 
 // Create OAuth config (you can reuse the same config from authentication)
@@ -84,7 +93,7 @@ $oauthConfig = new OAuthConfig(
 );
 
 // Revoke a specific access token
-$revokeRequest = new RevokeAccessTokenRequest(
+$revokeRequest = new RevokeAccessToken(
     accessToken: $userAccessToken, // The token you want to revoke
     oauthConfig: $oauthConfig
 );
@@ -103,12 +112,10 @@ The SDK allows you to retrieve user profile information using the access token o
 - Building user dashboards
 
 ```php
-use Canva\Requests\User\UserProfileRequest;
+use Canva\Requests\User\UserProfile;
 
 // Get user profile information using the access token
-$userProfileRequest = new UserProfileRequest(
-    accessToken: $userAccessToken // The access token from OAuth flow
-);
+$userProfileRequest = new UserProfile();
 
 // Send the request using Saloon
 $response = $userProfileRequest->send();
@@ -118,3 +125,25 @@ $userProfile = $response->json();
 ```
 
 **Note**: Currently, this endpoint returns the display name of the user account associated with the provided access token. More user information is expected to be included in future API updates.
+
+## Designs
+
+### Creating a Design
+
+To create a design using the Canva API, you can use the `CreateDesign` request. This request allows you to specify the design type, dimensions, and other parameters.
+
+```php
+use Canva\Requests\Designs\CreateDesign;
+
+// Create a new design
+// Refer to the Canva API documentation for available design types and parameters
+// https://www.canva.dev/docs/connect/api-reference/designs/create-design/
+$request = new CreateDesign([
+    "design_type" => [
+        "type" => "custom",
+        "height" => 1080,
+        "width" => 1920,
+    ],
+    "title" => "My New Design",
+]);
+```
