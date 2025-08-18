@@ -3,6 +3,8 @@
 namespace Canva;
 
 use Canva\Authentications\CanvaOAuth;
+use Canva\Resources\DesignResource;
+use Canva\Resources\DesignExportJobResource;
 use Saloon\Http\Auth\AccessTokenAuthenticator;
 use Saloon\Http\Connector;
 use DateTimeImmutable;
@@ -32,7 +34,7 @@ abstract class Canva extends Connector
         ];
     }
 
-    public static function oauth(string $clientId, string $clientSecret, string $redirectUri): self
+    public static function oauth(string $clientId, string $clientSecret, string $redirectUri): CanvaOAuth
     {
        return new CanvaOAuth($clientId, $clientSecret, $redirectUri);
     }
@@ -46,5 +48,15 @@ abstract class Canva extends Connector
         );
 
         return $this->authenticate($authenticator);
+    }
+
+    public function design(): DesignResource
+    {
+        return new DesignResource($this);
+    }
+
+    public function designExportJob(): DesignExportJobResource
+    {
+        return new DesignExportJobResource($this);
     }
 }

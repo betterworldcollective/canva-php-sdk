@@ -1,0 +1,26 @@
+{
+    "statusCode" : 200,
+    "headers": {
+        "Content-Type": "application/json;charset=utf-8",
+        "Date": "Mon, 18 Aug 2025 03:33:15 GMT",
+        "Server": "cloudflare",
+        "Transfer-Encoding": "chunked"
+    },
+    "data": {
+        "design": {
+            "id": "DAGwYwEDfW4",
+            "title": "Another design 101!!!",
+            "owner": {
+                "user_id": "oUW9bO4XELAI807jykI5e0",
+                "team_id": "oBW9br6UIMWEcvraibkWX8"
+            },
+            "urls": {
+                "edit_url": "https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzU4MDgwNTg1MDUwfQ..ApXQoTIJvLpkWh3R.GfcAHFtOIK37gTmTq-m_x3MRnq02sn-XxTQGZPszmxhC9zI8jHLLLjhRSI6lWWr4akenakw8lFx6DGcy9hHP2zJLb5t3SoYP77dVFdQlFmEfiY4.Oh5KkC6bj0RUgiu6eAzx_Q/edit?utm_source=OC-AZevsNWX3VAI&utm_medium=referral&utm_term=9b95b6af-749a-4ba3-8de5-967f7a25751d&utm_campaign=public_api_create_design_clicked_hyperlink",
+                "view_url": "https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzU4MDgwNTg1MDUwfQ..ApXQoTIJvLpkWh3R.GfcAHFtOIK37gTmTq-m_x3MRnq02sn-XxTQGZPszmxhC9zI8jHLLLjhRSI6lWWr4akenakw8lFx6DGcy9hHP2zJLb5t3SoYP77dVFdQlFmEfiY4.Oh5KkC6bj0RUgiu6eAzx_Q/view?utm_source=OC-AZevsNWX3VAI&utm_medium=referral&utm_term=79fbc12c-70e1-4963-b232-fb68ddf78a97&utm_campaign=public_api_create_design_clicked_hyperlink"
+            },
+            "created_at": 1755488585,
+            "updated_at": 1755488585,
+            "page_count": 1
+        }
+    }
+}
