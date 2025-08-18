@@ -29,6 +29,14 @@ $canva = new CanvaOAuth(
   redirectUri: $config["redirect_uri"]
 );
 
+or
+
+$canva = Canva::oauth(
+  clientId: $config["client_id"],
+  clientSecret: $config["client_secret"],
+  redirectUri: $config["redirect_uri"]
+);
+
 $canva->setCodeChallenge($codeVerifier); 
 
 $authorizationUrl = $canva->getAuthUrl();
@@ -100,6 +108,8 @@ $revokeRequest = new RevokeAccessToken(
 
 // Send the request using Saloon
 $response = $revokeRequest->send();
+
+Note: You can also delete the access token from your database, this will prompt the user to re-authenticate and Canva handles the revocation of existing tokens automatically.
 ```
 
 ### Getting User Profile Information
@@ -112,7 +122,7 @@ The SDK allows you to retrieve user profile information using the access token o
 - Building user dashboards
 
 ```php
-$connector->user()->profile();
+$canva->user()->profile();
 ```
 
 **Note**: Currently, this endpoint returns the display name of the user account associated with the provided access token. More user information is expected to be included in future API updates.
@@ -129,7 +139,7 @@ use Canva\Requests\Designs\CreateDesign;
 // Create a new design
 // Refer to the Canva API documentation for available design types and parameters
 // https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-$connector->designs()->create([
+$canva->designs()->create([
     "design_type" => [
         "type" => "custom",
         "height" => 1080,
@@ -147,7 +157,7 @@ use Canva\Requests\Export\CreateExportJob;
 
 // Create an export job for a design
 // Refer to the Canva API documentation https://www.canva.dev/docs/connect/api-reference/exports/create-design-export-job/
-$connector->designExportJob()->create([
+$canva->designExportJob()->create([
     "design_id" => "YOUR_DESIGN_ID",
     "format" => [
         "type" => "jpg", // See ExportFormatType enum
@@ -160,7 +170,7 @@ $connector->designExportJob()->create([
 ### Get Design Export Job
 To check the status of an export job, you can use the `GetDesignExportJob`
 ```php
-$connector->designExportJob->get(
+$canva->designExportJob()->get(
     exportId: "YOUR_EXPORT_JOB_ID" // Replace with your export job ID
 )
 ```
