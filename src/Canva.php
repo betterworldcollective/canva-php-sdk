@@ -5,6 +5,7 @@ namespace Canva;
 use Canva\Authentications\CanvaOAuth;
 use Canva\Resources\DesignResource;
 use Canva\Resources\DesignExportJobResource;
+use Canva\Resources\UserResource;
 use Saloon\Http\Auth\AccessTokenAuthenticator;
 use Saloon\Http\Connector;
 use DateTimeImmutable;
@@ -58,5 +59,10 @@ abstract class Canva extends Connector
     public function designExportJob(): DesignExportJobResource
     {
         return new DesignExportJobResource($this);
+    }
+
+    public function user(): UserResource
+    {
+        return new UserResource($this);
     }
 }

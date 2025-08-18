@@ -112,16 +112,7 @@ The SDK allows you to retrieve user profile information using the access token o
 - Building user dashboards
 
 ```php
-use Canva\Requests\User\UserProfile;
-
-// Get user profile information using the access token
-$userProfileRequest = new UserProfile();
-
-// Send the request using Saloon
-$response = $userProfileRequest->send();
-
-// The response contains user profile data
-$userProfile = $response->json();
+$connector->user()->profile();
 ```
 
 **Note**: Currently, this endpoint returns the display name of the user account associated with the provided access token. More user information is expected to be included in future API updates.
@@ -138,13 +129,13 @@ use Canva\Requests\Designs\CreateDesign;
 // Create a new design
 // Refer to the Canva API documentation for available design types and parameters
 // https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-$request = new CreateDesign([
+$connector->designs()->create([
     "design_type" => [
         "type" => "custom",
         "height" => 1080,
         "width" => 1920,
     ],
-    "title" => "My New Design",
+    "title" => "My New Design"
 ]);
 ```
 
@@ -156,10 +147,11 @@ use Canva\Requests\Export\CreateExportJob;
 
 // Create an export job for a design
 // Refer to the Canva API documentation https://www.canva.dev/docs/connect/api-reference/exports/create-design-export-job/
-$request = new CreateExportJob([
-    "design_id" => "YOUR_DESIGN_ID", // Replace with your design ID
+$connector->designExportJob()->create([
+    "design_id" => "YOUR_DESIGN_ID",
     "format" => [
-        "type" => "png", // Specify the desired export format (e.g., png, pdf)
+        "type" => "jpg", // See ExportFormatType enum
+        "quality" => 80, // Optional
     ]
 ]);
 ```
@@ -168,11 +160,7 @@ $request = new CreateExportJob([
 ### Get Design Export Job
 To check the status of an export job, you can use the `GetDesignExportJob`
 ```php
-use Canva\Requests\Export\GetDesignExportJob;
-
-// Get the status of an export job
-// Refer to the Canva API documentation https://www.canva.dev/docs/connect/api-reference/exports/get-design-export-job/
-$request = new GetDesignExportJob(
-    exportId: "export_id" => "YOUR_EXPORT_JOB_ID", // Replace with your export job ID
-);
+$connector->designExportJob->get(
+    exportId: "YOUR_EXPORT_JOB_ID" // Replace with your export job ID
+)
 ```

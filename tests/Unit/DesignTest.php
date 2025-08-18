@@ -25,7 +25,10 @@ test('can create a design', function () use ($client) {
 
     $responseBody = $design->json();
 
-    expect($responseBody['design']['id'])->toBe('DAGwYwEDfW4')
+    expect($responseBody)->toHaveKey('design')
+        ->and($responseBody['design'])->toHaveKey('id')
+        ->and($responseBody['design']['id'])->toBe('DAGwYwEDfW4')
+        ->and($responseBody['design'])->toHaveKey('title')
         ->and($responseBody['design']['title'])->toBe('Another design 101!!!')
         ->and($responseBody['design'])->toHaveKey('owner')
         ->and($responseBody['design'])->toHaveKey('urls');
