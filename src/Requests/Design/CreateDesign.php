@@ -55,13 +55,7 @@ class CreateDesign extends Request implements HasBody
      */
     public function __construct(protected array $properties)
     {
-        // Ensure the required properties are set
-        if (
-            !isset($this->properties['design_type']) ||
-            ($this->properties['design_type'] == 'preset' && !isset($this->properties['name']))
-        ) {
-            throw new \InvalidArgumentException('Required properties are missing.');
-        }
+        //
     }
 
     /**

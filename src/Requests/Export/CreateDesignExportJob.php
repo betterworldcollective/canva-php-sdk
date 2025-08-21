@@ -60,6 +60,10 @@ class CreateDesignExportJob extends Request implements HasBody
         if (empty($this->properties['format'])) {
             throw new \InvalidArgumentException('The format is required.');
         }
+
+        if (empty($this->properties['format']['type'])) {
+            throw new \InvalidArgumentException('The format type is required.');
+        }
     }
 
     /**
