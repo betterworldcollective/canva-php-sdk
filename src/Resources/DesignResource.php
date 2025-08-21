@@ -14,7 +14,7 @@ class DesignResource extends BaseResource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function create(array $properties): Design
+    public function create(array $properties): mixed
     {
         $response = $this->connector->send(new CreateDesign($properties));
 

@@ -2,8 +2,8 @@
 
 namespace Canva\Requests\Design;
 
-use Canva\Data\ApiCollection;
 use Canva\Data\Designs\Design;
+use JsonException;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -29,6 +29,21 @@ use Saloon\Traits\Body\HasJsonBody;
  * NOTE: Blank
  * designs created with this API are automatically deleted if they're not edited within 7 days. These
  * blank designs bypass the user's Canva trash and are permanently deleted.
+ *
+ * @phpstan-import-type OwnerDataResponse from \Canva\Data\Designs\Owner
+ * @phpstan-import-type UrlsDataResponse from \Canva\Data\Designs\Urls
+ * @phpstan-import-type ThumbnailDataResponse from \Canva\Data\Designs\Thumbnail
+ *
+ * @phpstan-type DesignDataResponse array{
+ *     id: string,
+ *     title: string,
+ *     owner: OwnerDataResponse,
+ *     urls: UrlsDataResponse,
+ *     thumbnail?: ThumbnailDataResponse,
+ *     created_at: string,
+ *     updated_at: string,
+ *     page_count: int
+ * }
  */
 class CreateDesign extends Request implements HasBody
 {
@@ -72,10 +87,15 @@ class CreateDesign extends Request implements HasBody
         return $this->properties;
     }
 
-    public function createDtoFromResponse(Response $response): mixed
+    /**
+     * @throws JsonException
+     */
+    public function createDtoFromResponse(Response $response): Design
     {
-        $data = $response->json();
+        $responseBody = $response->json();
+        /** @var DesignDataResponse $design */
+        $design = $responseBody['design'];
 
-        return Design::from($data['design']);
+        return Design::from($design);
     }
 }

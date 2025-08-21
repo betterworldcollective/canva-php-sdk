@@ -2,8 +2,8 @@
 
 namespace Canva\Requests\Export;
 
-use Canva\Data\ApiCollection;
 use Canva\Data\Exports\DesignExportJob;
+use JsonException;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -24,6 +24,14 @@ use Saloon\Http\Response;
  * or `failed` status. For more information on the workflow for using asynchronous jobs, see [API
  * requests and
  * responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints).
+ * @phpstan-import-type ErrorDataResponse from \Canva\Data\Exports\Error
+ *
+ * @phpstan-type DesignExportJobDataResponse array{
+ *      id: string,
+ *      status: string,
+ *      urls?: array<int, string>|null, // If the export has multiple pages, this will be an array of URLs.
+ *      error?: ErrorDataResponse
+ *  }
  */
 class GetDesignExportJob extends Request
 {
@@ -44,10 +52,16 @@ class GetDesignExportJob extends Request
     ) {
     }
 
-    public function createDtoFromResponse(Response $response): mixed
+    /**
+     * @throws JsonException
+     */
+    public function createDtoFromResponse(Response $response): DesignExportJob
     {
-        $data = $response->json();
+        $responseBody = $response->json();
 
-        return DesignExportJob::from($data['job']);
+        /** @var DesignExportJobDataResponse $job */
+        $job = $responseBody['job'];
+
+        return DesignExportJob::from($job);
     }
 }

@@ -25,11 +25,10 @@ class DesignExportJobResource extends BaseResource
      * Creates a new design export job.
      *
      * @param ExportFormat $properties The properties for the export job.
-     * @return Response
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function create(array $properties): DesignExportJob
+    public function create(array $properties): mixed
     {
         return $this->connector->send(new CreateDesignExportJob($properties))->dto();
     }
@@ -40,7 +39,7 @@ class DesignExportJobResource extends BaseResource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
  */
-    public function get(string $exportId): DesignExportJob
+    public function get(string $exportId): mixed
     {
         return $this->connector->send(new GetDesignExportJob($exportId))->dto();
     }

@@ -2,8 +2,8 @@
 
 namespace Canva\Requests\Export;
 
-use Canva\Data\ApiCollection;
 use Canva\Data\Exports\DesignExportJob;
+use JsonException;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -44,6 +44,15 @@ use Saloon\Traits\Body\HasJsonBody;
  *         size?: string,
  *         pages?: array<int>
  *     }
+ * }
+ *
+ * @phpstan-import-type ErrorDataResponse from \Canva\Data\Exports\Error
+ *
+ * @phpstan-type DesignExportJobDataResponse array{
+ *      id: string,
+ *      status: string,
+ *      urls?: array<int, string>|null, // If the export has multiple pages, this will be an array of URLs.
+ *      error?: ErrorDataResponse
  * }
  */
 class CreateDesignExportJob extends Request implements HasBody
@@ -91,10 +100,15 @@ class CreateDesignExportJob extends Request implements HasBody
         return $this->properties;
     }
 
-    public function createDtoFromResponse(Response $response): mixed
+    /**
+     * @throws JsonException
+     */
+    public function createDtoFromResponse(Response $response): DesignExportJob
     {
         $data = $response->json();
+        /** @var DesignExportJobDataResponse $job */
+        $job = $data['job'];
 
-        return DesignExportJob::from($data['job']);
+        return DesignExportJob::from($job);
     }
 }
