@@ -7,12 +7,23 @@ use Canva\Requests\Export\GetDesignExportJob;
 use Saloon\Http\BaseResource;
 use Saloon\Http\Response;
 
+/**
+ * @phpstan-type ExportFormat array{
+ *     design_id: string,
+ *     format: array{
+ *         type: string,
+ *         export_quality?: string,
+ *         size?: string,
+ *         pages?: array<int>
+ *     }
+ * }
+ */
 class DesignExportJobResource extends BaseResource
 {
     /**
      * Creates a new design export job.
      *
-     * @param array<string, mixed> $properties The properties for the export job.
+     * @param ExportFormat $properties The properties for the export job.
      * @return Response
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException

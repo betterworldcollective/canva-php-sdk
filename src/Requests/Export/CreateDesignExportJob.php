@@ -32,6 +32,16 @@ use Saloon\Traits\Body\HasJsonBody;
  * API](https://www.canva.dev/docs/connect/api-reference/exports/get-design-export-job/).
  *
  * </Note>
+ * 
+ * @phpstan-type ExportFormat array{
+ *     design_id: string,
+ *     format: array{
+ *         type: string,
+ *         export_quality?: string,
+ *         size?: string,
+ *         pages?: array<int>
+ *     }
+ * }
  */
 class CreateDesignExportJob extends Request implements HasBody
 {
@@ -48,7 +58,7 @@ class CreateDesignExportJob extends Request implements HasBody
     /**
      * CreateDesignExportJob constructor.
      *
-     * @param array<string, mixed> $properties
+     * @param ExportFormat $properties
      */
     public function __construct(protected array $properties)
     {
@@ -61,7 +71,9 @@ class CreateDesignExportJob extends Request implements HasBody
             throw new \InvalidArgumentException('The format is required.');
         }
 
-        if (empty($this->properties['format']['type'])) {
+        // Type-safe access with proper validation
+        $format = $this->properties['format'];
+        if (empty($format['type'])) {
             throw new \InvalidArgumentException('The format type is required.');
         }
     }
@@ -69,7 +81,7 @@ class CreateDesignExportJob extends Request implements HasBody
     /**
      * Get the default body for the request.
      *
-     * @return array<string, mixed>
+     * @return ExportFormat
      */
     public function defaultBody(): array
     {
