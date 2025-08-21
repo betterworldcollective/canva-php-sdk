@@ -9,6 +9,7 @@ $client = Canva::oauth('client-id', 'client-secret', 'redirect-uri')->authentica
 
 
 test('can create a design export job', function () use ($client) {
+    /** @var DesignExportJob $exportJob */
     $exportJob = $client->designExportJob()->create([
         'design_id' => 'DAGwYwEDfW4',
         'format' => [
@@ -18,24 +19,17 @@ test('can create a design export job', function () use ($client) {
     ]);
 
     expect($exportJob)->toBeInstanceOf(DesignExportJob::class);
-
-    $responseBody = $exportJob->json();
-
-    expect($responseBody)->toHaveKey('job')
-        ->and($responseBody['job'])->toHaveKey('id')
-        ->and($responseBody['job'])->toHaveKey('status');
+    expect($exportJob)->toHaveKey('id')
+        ->and($exportJob->id)->toBe('be67f84b-fe7d-4993-bf98-6325d436e810')
+        ->and($exportJob)->toHaveKey('status');
 });
 
 test('can get a design export job', function () use ($client) {
+    /** @var DesignExportJob $exportJob */
     $exportJob = $client->designExportJob()->get("be67f84b-fe7d-4993-bf98-6325d436e810");
 
-    expect($exportJob)->toBeInstanceOf(Response::class);
-
-    $responseBody = $exportJob->json();
-
-    expect($responseBody)->toHaveKey('job')
-        ->and($responseBody['job'])->toHaveKey('id')
-        ->and($responseBody['job'])->toHaveKey('status')
-        ->and($responseBody['job'])->toHaveKey('urls')
-        ->and($responseBody['job']['urls'])->toBeArray();
+    expect($exportJob)->toBeInstanceOf(DesignExportJob::class);
+    expect($exportJob)->toHaveKey('id')
+        ->and($exportJob->id)->toBe('be67f84b-fe7d-4993-bf98-6325d436e810')
+        ->and($exportJob)->toHaveKey('status');
 });
