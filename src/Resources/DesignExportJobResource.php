@@ -2,6 +2,7 @@
 
 namespace Canva\Resources;
 
+use Canva\Data\Exports\DesignExportJob;
 use Canva\Requests\Export\CreateDesignExportJob;
 use Canva\Requests\Export\GetDesignExportJob;
 use Saloon\Http\BaseResource;
@@ -28,9 +29,9 @@ class DesignExportJobResource extends BaseResource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function create(array $properties): Response
+    public function create(array $properties): DesignExportJob
     {
-        return $this->connector->send(new CreateDesignExportJob($properties));
+        return $this->connector->send(new CreateDesignExportJob($properties))->dto();
     }
 
 
@@ -39,8 +40,8 @@ class DesignExportJobResource extends BaseResource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
  */
-    public function get(string $exportId): Response
+    public function get(string $exportId): DesignExportJob
     {
-        return $this->connector->send(new GetDesignExportJob($exportId));
+        return $this->connector->send(new GetDesignExportJob($exportId))->dto();
     }
 }

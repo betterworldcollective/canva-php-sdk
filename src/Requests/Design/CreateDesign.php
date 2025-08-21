@@ -2,9 +2,12 @@
 
 namespace Canva\Requests\Design;
 
+use Canva\Data\ApiCollection;
+use Canva\Data\Designs\Design;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 use Saloon\Traits\Body\HasJsonBody;
 
 /**
@@ -67,5 +70,12 @@ class CreateDesign extends Request implements HasBody
     public function defaultBody(): array
     {
         return $this->properties;
+    }
+
+    public function createDtoFromResponse(Response $response): mixed
+    {
+        $data = $response->json();
+
+        return Design::from($data['design']);
     }
 }

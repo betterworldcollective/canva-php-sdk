@@ -2,8 +2,11 @@
 
 namespace Canva\Requests\Export;
 
+use Canva\Data\ApiCollection;
+use Canva\Data\Exports\DesignExportJob;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 
 /**
  * GetDesignExportJob
@@ -39,5 +42,12 @@ class GetDesignExportJob extends Request
     public function __construct(
         protected string $exportId,
     ) {
+    }
+
+    public function createDtoFromResponse(Response $response): mixed
+    {
+        $data = $response->json();
+
+        return DesignExportJob::from($data['job']);
     }
 }

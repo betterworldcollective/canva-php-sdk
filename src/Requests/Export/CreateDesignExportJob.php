@@ -2,9 +2,12 @@
 
 namespace Canva\Requests\Export;
 
+use Canva\Data\ApiCollection;
+use Canva\Data\Exports\DesignExportJob;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 use Saloon\Traits\Body\HasJsonBody;
 
 /**
@@ -32,7 +35,7 @@ use Saloon\Traits\Body\HasJsonBody;
  * API](https://www.canva.dev/docs/connect/api-reference/exports/get-design-export-job/).
  *
  * </Note>
- * 
+ *
  * @phpstan-type ExportFormat array{
  *     design_id: string,
  *     format: array{
@@ -86,5 +89,12 @@ class CreateDesignExportJob extends Request implements HasBody
     public function defaultBody(): array
     {
         return $this->properties;
+    }
+
+    public function createDtoFromResponse(Response $response): mixed
+    {
+        $data = $response->json();
+
+        return DesignExportJob::from($data['job']);
     }
 }

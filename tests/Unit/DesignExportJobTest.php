@@ -1,6 +1,7 @@
 <?php
 
 use Canva\Canva;
+use Canva\Data\Exports\DesignExportJob;
 use Canva\Enums\ExportFormatType;
 use Saloon\Http\Response;
 
@@ -16,7 +17,7 @@ test('can create a design export job', function () use ($client) {
         ]
     ]);
 
-    expect($exportJob)->toBeInstanceOf(Response::class);
+    expect($exportJob)->toBeInstanceOf(DesignExportJob::class);
 
     $responseBody = $exportJob->json();
 
