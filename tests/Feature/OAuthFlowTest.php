@@ -46,7 +46,7 @@ test('complete OAuth flow', function () {
     $accessTokenRequest = new CanvaAccessToken($authCode, $oauthConfig, $codeVerifier);
 
     expect($accessTokenRequest)->toBeInstanceOf(CanvaAccessToken::class);
-    expect($accessTokenRequest->resolveEndpoint())->toBe('https://api.canva.com/rest/v1/oauth/token');
+    expect($accessTokenRequest->resolveEndpoint())->toBe('/v1/oauth/token');
 
     // Step 6: Simulate having an access token and create user profile request
     $userProfileRequest = new UserProfile();

@@ -3,12 +3,15 @@
 namespace Canva;
 
 use Canva\Authentications\CanvaOAuth;
+use Canva\Requests\OAuth\RefreshAccessToken;
 use Canva\Resources\DesignResource;
 use Canva\Resources\DesignExportJobResource;
 use Canva\Resources\UserResource;
 use Saloon\Http\Auth\AccessTokenAuthenticator;
 use Saloon\Http\Connector;
 use DateTimeImmutable;
+use Saloon\Helpers\OAuth2\OAuthConfig;
+use Saloon\Http\Request;
 
 abstract class Canva extends Connector
 {

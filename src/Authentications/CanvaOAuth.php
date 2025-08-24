@@ -4,6 +4,7 @@ namespace Canva\Authentications;
 
 use Canva\Canva;
 use Canva\Requests\OAuth\CanvaAccessToken;
+use Canva\Requests\OAuth\RefreshAccessToken;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Request;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
@@ -58,6 +59,11 @@ class CanvaOAuth extends Canva
         }
 
         return new CanvaAccessToken($code, $oauthConfig, $this->codeVerifier);
+    }
+
+    protected function resolveRefreshTokenRequest(OAuthConfig $oauthConfig, string $refreshToken): Request
+    {
+        return new RefreshAccessToken($oauthConfig, $refreshToken);
     }
 
     /**

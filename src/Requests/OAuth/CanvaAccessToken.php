@@ -36,7 +36,7 @@ class CanvaAccessToken extends Request implements HasBody
      */
     public function resolveEndpoint(): string
     {
-        return "https://api.canva.com/rest/v1/oauth/token"; // Double-check Canva’s docs for exact URL
+        return "/v1/oauth/token"; // Double-check Canva’s docs for exact URL
     }
 
     /**

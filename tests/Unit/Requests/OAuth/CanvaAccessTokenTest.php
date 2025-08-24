@@ -21,7 +21,7 @@ beforeEach(function () {
 test('resolve endpoint', function () {
     $endpoint = $this->request->resolveEndpoint();
 
-    expect($endpoint)->toBe('https://api.canva.com/rest/v1/oauth/token');
+    expect($endpoint)->toBe('/v1/oauth/token');
 });
 
 test('method is POST', function () {
