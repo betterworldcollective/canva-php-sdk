@@ -2,10 +2,9 @@
 
 namespace Canva\Resources;
 
-use Canva\Data\Designs\Design;
 use Canva\Requests\Design\CreateDesign;
+use Canva\Requests\Design\GetDesign;
 use Saloon\Http\BaseResource;
-use Saloon\Http\Response;
 
 class DesignResource extends BaseResource
 {
@@ -17,6 +16,13 @@ class DesignResource extends BaseResource
     public function create(array $properties): mixed
     {
         $response = $this->connector->send(new CreateDesign($properties));
+
+        return $response->dto();
+    }
+
+    public function get(string $designId): mixed
+    {
+        $response = $this->connector->send(new GetDesign($designId));
 
         return $response->dto();
     }

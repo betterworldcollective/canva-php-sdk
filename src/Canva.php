@@ -6,6 +6,7 @@ use Canva\Authentications\CanvaOAuth;
 use Canva\Requests\OAuth\RefreshAccessToken;
 use Canva\Resources\DesignResource;
 use Canva\Resources\DesignExportJobResource;
+use Canva\Resources\KeyResource;
 use Canva\Resources\UserResource;
 use Saloon\Http\Auth\AccessTokenAuthenticator;
 use Saloon\Http\Connector;
@@ -67,5 +68,10 @@ abstract class Canva extends Connector
     public function user(): UserResource
     {
         return new UserResource($this);
+    }
+
+    public function keys(): KeyResource
+    {
+        return new KeyResource($this);
     }
 }

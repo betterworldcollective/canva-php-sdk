@@ -13,6 +13,7 @@ use Saloon\Http\Response;
  *     design_id: string,
  *     format: array{
  *         type: string,
+ *         quality?: string,
  *         export_quality?: string,
  *         size?: string,
  *         pages?: array<int>
