@@ -14,7 +14,7 @@ use Canva\Data\BaseData;
 class Key extends BaseData
 {
     /**
-     * @param EdDsaJwk[] $keys
+     * @param array<EdDsaJwk> $keys
      */
     public function __construct(
         public array $keys,

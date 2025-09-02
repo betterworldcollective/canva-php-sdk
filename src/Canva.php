@@ -8,6 +8,7 @@ use Canva\Resources\DesignResource;
 use Canva\Resources\DesignExportJobResource;
 use Canva\Resources\KeyResource;
 use Canva\Resources\UserResource;
+use Canva\Traits\VerifiesToken;
 use Saloon\Http\Auth\AccessTokenAuthenticator;
 use Saloon\Http\Connector;
 use DateTimeImmutable;
@@ -16,6 +17,9 @@ use Saloon\Http\Request;
 
 abstract class Canva extends Connector
 {
+    use VerifiesToken;
+
+
     /**
      * The base URL for the Canva API.
      *
