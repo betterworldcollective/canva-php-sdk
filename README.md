@@ -112,6 +112,41 @@ $response = $revokeRequest->send();
 Note: You can also delete the access token from your database, this will prompt the user to re-authenticate and Canva handles the revocation of existing tokens automatically.
 ```
 
+### Verifying JWT Tokens
+
+The SDK provides functionality to verify JWT tokens using Canva's public keys. This is useful for:
+
+- Verifying the authenticity of tokens received from Canva
+- Validating token claims and app ID
+- Implementing secure webhook handling
+
+```php
+// Get Canva's public keys
+$keys = $canva->keys()->get();
+
+// Verify a JWT token
+$decodedToken = $canva->verifyToken(
+    correlationJwt: $jwtToken, // The JWT token to verify (eg. correlation jwt param from return URL)
+    keys: $keys->keys, // Array of public keys from Canva
+    appId: 'YOUR_APP_ID' // Your app's client ID for validation
+);
+
+// The method returns the decoded token payload
+echo $decodedToken->sub; // User ID
+echo $decodedToken->aud; // App ID
+```
+
+The correlation_jwt parameter is a URL-safe, Base64-encoded JSON Web Token (JWT). The JWT contains the following claims:
+
+    aud: Your integration's Client ID.
+    exp: The token expiry. This is 1 day after the design is opened in the Canva editor.
+    sub: The User ID of the user who initiated the return navigation workflow.
+    team_id: The Team ID of the user who initiated the return navigation workflow.
+    type: Set as rti.
+    jti: The token's unique identifier (JWT ID).
+    design_id: The design's ID.
+    correlation_state: Your original correlation_state string passed to Canva in your prepared edit or view URL.
+
 ### Getting User Profile Information
 
 The SDK allows you to retrieve user profile information using the access token obtained during OAuth authentication. This is useful for:
