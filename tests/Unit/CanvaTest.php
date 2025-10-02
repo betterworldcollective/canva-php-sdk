@@ -2,11 +2,11 @@
 
 namespace Canva\Tests\Unit;
 
-use Canva\CanvaAuthConnector;
+use Canva\Canva;
 
 test('base URL is correctly resolved', function () {
     // Create a concrete implementation of the abstract Canva class for testing
-    $canva = (new CanvaAuthConnector('client-id', 'client-secret', 'redirect-uri'));
+    $canva = (new Canva('client-id', 'client-secret', 'redirect-uri'));
 
     $baseUrl = $canva->resolveBaseUrl();
 
@@ -14,7 +14,7 @@ test('base URL is correctly resolved', function () {
 });
 
 test('default headers are correctly set', function () {
-    $canva = (new CanvaAuthConnector('client-id', 'client-secret', 'redirect-uri'));
+    $canva = (new Canva('client-id', 'client-secret', 'redirect-uri'));
 
     $headers = $canva->defaultHeaders();
 
@@ -30,9 +30,9 @@ test('oauth factory method returns Canva instance', function () {
     $clientSecret = 'test_client_secret';
     $redirectUri = 'https://example.com/callback';
 
-    $result = new CanvaAuthConnector($clientId, $clientSecret, $redirectUri);
+    $result = new Canva($clientId, $clientSecret, $redirectUri);
 
-    expect($result)->toBeInstanceOf(CanvaAuthConnector::class);
+    expect($result)->toBeInstanceOf(Canva::class);
 });
 
 test('oauth factory method passes correct parameters', function () {
@@ -40,8 +40,8 @@ test('oauth factory method passes correct parameters', function () {
     $clientSecret = 'test_client_secret';
     $redirectUri = 'https://example.com/callback';
 
-    $result = new CanvaAuthConnector($clientId, $clientSecret, $redirectUri);
+    $result = new Canva($clientId, $clientSecret, $redirectUri);
 
     // Verify the OAuth instance is properly configured
-    expect($result)->toBeInstanceOf(CanvaAuthConnector::class);
+    expect($result)->toBeInstanceOf(Canva::class);
 });

@@ -3,7 +3,7 @@
 namespace Canva\Tests\Feature;
 
 use Canva\Authentications\CanvaOAuth;
-use Canva\CanvaAuthConnector;
+use Canva\Canva;
 use Canva\Requests\OAuth\CanvaAccessToken;
 use Canva\Requests\OAuth\RevokeAccessToken;
 use Canva\Requests\User\UserProfile;
@@ -17,9 +17,9 @@ beforeEach(function () {
 
 test('complete OAuth flow', function () {
     // Step 1: Create OAuth instance
-    $canvaOAuth = (new CanvaAuthConnector($this->clientId, $this->clientSecret, $this->redirectUri));
+    $canvaOAuth = (new Canva($this->clientId, $this->clientSecret, $this->redirectUri));
 
-    expect($canvaOAuth)->toBeInstanceOf(CanvaAuthConnector::class);
+    expect($canvaOAuth)->toBeInstanceOf(Canva::class);
 
     // Step 2: Set up PKCE code verifier
     $codeVerifier = 'test_code_verifier_123456789012345678901234567890123456789012345678901234567890';
@@ -57,7 +57,7 @@ test('complete OAuth flow', function () {
 });
 
 test('PKCE flow', function () {
-    $canvaOAuth = new CanvaAuthConnector($this->clientId, $this->clientSecret, $this->redirectUri);
+    $canvaOAuth = new Canva($this->clientId, $this->clientSecret, $this->redirectUri);
 
     // Test PKCE code verifier and challenge generation
     $codeVerifier = 'test_code_verifier_123456789012345678901234567890123456789012345678901234567890';

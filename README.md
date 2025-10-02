@@ -13,8 +13,9 @@ composer require betterworldcollective/canva-php-sdk
 Canva uses OAuth 2.0 for authenticating access to Canva Connect API. Here's how to set up and use the authentication flow using the SDK:
 
 To begin the OAuth flow, you'll need to redirect your user to an authorization URL where they can grant your application access.
+
 ```php
-use Canva\Authentications\CanvaOAuth;
+use Canva\Canva;
 
 $config = [
   "client_id" => "YOUR_CLIENT_ID",
@@ -23,21 +24,13 @@ $config = [
 ];
 
 // Generate the Canva OAuth login URL
-$canva = new CanvaOAuth(
+$canva = new Canva(
   clientId: $config["client_id"],
   clientSecret: $config["client_secret"],
   redirectUri: $config["redirect_uri"]
 );
 
-or
-
-$canva = Canva::oauth(
-  clientId: $config["client_id"],
-  clientSecret: $config["client_secret"],
-  redirectUri: $config["redirect_uri"]
-);
-
-$canva->setCodeChallenge($codeVerifier); 
+$canva->setCodeVerifier($codeVerifier); 
 
 $authorizationUrl = $canva->getAuthUrl();
 ```
@@ -57,7 +50,7 @@ function generateCodeVerifier()
 After the user grants access, they will be redirected back to your specified redirect URI with a `code` parameter. You can then exchange this code for an access token.
 
 ```php
-$canva = new CanvaOAuth(
+$canva = new Canva(
   clientId: $config["client_id"],
   clientSecret: $config["client_secret"],
   redirectUri: $config["redirect_uri"],
@@ -72,10 +65,12 @@ $authenticator = $canva->getAccessToken($request["code"], $request["state"]); //
 ## Using Access Tokens
 Once you have the access token, you can use it to make authenticated requests to the Canva API. The SDK provides a convenient way to include the access token in your requests.
 ```php
-use Saloon\Http\Auth\AccessTokenAuthenticator;
+// Create a Canva instance and authenticate with your access token
+$canva = new Canva($clientId, $clientSecret, $redirectUri);
+$canva->authenticateWithToken($accessToken);
 
-// Set up token configuration for requests
-$canva->authenticateWithToken($token, $refreshToken, $expiresAt);
+// Now you can make authenticated API requests
+$userProfile = $canva->user()->profile();
 ```
 
 ## Token Management
@@ -157,6 +152,8 @@ The SDK allows you to retrieve user profile information using the access token o
 - Building user dashboards
 
 ```php
+$canva = new Canva($clientId, $clientSecret, $redirectUri);
+$canva->authenticateWithToken($accessToken);
 $canva->user()->profile();
 ```
 
@@ -169,12 +166,12 @@ $canva->user()->profile();
 To create a design using the Canva API, you can use the `CreateDesign` request. This request allows you to specify the design type, dimensions, and other parameters.
 
 ```php
-use Canva\Requests\Designs\CreateDesign;
-
 // Create a new design
 // Refer to the Canva API documentation for available design types and parameters
 // https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-$canva->designs()->create([
+$canva = new Canva($clientId, $clientSecret, $redirectUri);
+$canva->authenticateWithToken($accessToken);
+$canva->design()->create([
     "design_type" => [
         "type" => "custom",
         "height" => 1080,
@@ -188,10 +185,10 @@ $canva->designs()->create([
 To create an export job for a design, you can use the `CreateExportJob` request. This allows you to specify the design ID and the desired export format.
 
 ```php
-use Canva\Requests\Export\CreateExportJob;
-
 // Create an export job for a design
 // Refer to the Canva API documentation https://www.canva.dev/docs/connect/api-reference/exports/create-design-export-job/
+$canva = new Canva($clientId, $clientSecret, $redirectUri);
+$canva->authenticateWithToken($accessToken);
 $canva->designExportJob()->create([
     "design_id" => "YOUR_DESIGN_ID",
     "format" => [
@@ -205,6 +202,8 @@ $canva->designExportJob()->create([
 ### Get Design Export Job
 To check the status of an export job, you can use the `GetDesignExportJob`
 ```php
+$canva = new Canva($clientId, $clientSecret, $redirectUri);
+$canva->authenticateWithToken($accessToken);
 $canva->designExportJob()->get(
     exportId: "YOUR_EXPORT_JOB_ID" // Replace with your export job ID
 )

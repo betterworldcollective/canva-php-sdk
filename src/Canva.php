@@ -4,13 +4,18 @@ namespace Canva;
 
 use Canva\Requests\OAuth\CanvaAccessToken;
 use Canva\Requests\OAuth\RefreshAccessToken;
+use Canva\Resources\DesignExportJobResource;
+use Canva\Resources\DesignResource;
+use Canva\Resources\KeyResource;
+use Canva\Resources\UserResource;
 use Canva\Traits\VerifiesToken;
 use Saloon\Helpers\OAuth2\OAuthConfig;
+use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Http\Request;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 
-class CanvaAuthConnector extends Connector
+class Canva extends Connector
 {
     use AuthorizationCodeGrant;
     use VerifiesToken;
@@ -19,7 +24,7 @@ class CanvaAuthConnector extends Connector
     private ?string $codeChallenge = null;
 
     /**
-     * Create a new CanvaAuthConnector instance.
+     * Create a new Canva instance.
      *
      * @param string $clientId The client ID for the OAuth application.
      * @param string $clientSecret The client secret for the OAuth application.
@@ -55,16 +60,6 @@ class CanvaAuthConnector extends Connector
                 'brandtemplate:meta:read',
                 'profile:read'
             ]);
-    }
-
-    /**
-     * The base URL for the Canva API.
-     *
-     * @return string
-     */
-    public function resolveBaseUrl(): string
-    {
-        return 'https://api.canva.com/rest/';
     }
 
     /**
@@ -154,5 +149,42 @@ class CanvaAuthConnector extends Connector
     protected function resolveRefreshTokenRequest(OAuthConfig $oauthConfig, string $refreshToken): Request
     {
         return new RefreshAccessToken($oauthConfig, $refreshToken);
+    }
+
+    /**
+     * The base URL for the Canva API.
+     *
+     * @return string
+     */
+    public function resolveBaseUrl(): string
+    {
+        return 'https://api.canva.com/rest/';
+    }
+
+    public function authenticateWithToken(string $token): static
+    {
+        $authenticator = new TokenAuthenticator($token);
+
+        return $this->authenticate($authenticator);
+    }
+
+    public function design(): DesignResource
+    {
+        return new DesignResource($this);
+    }
+
+    public function designExportJob(): DesignExportJobResource
+    {
+        return new DesignExportJobResource($this);
+    }
+
+    public function user(): UserResource
+    {
+        return new UserResource($this);
+    }
+
+    public function keys(): KeyResource
+    {
+        return new KeyResource($this);
     }
 }

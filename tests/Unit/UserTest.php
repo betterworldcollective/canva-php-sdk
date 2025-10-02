@@ -1,9 +1,9 @@
 <?php
 
-use Canva\CanvaApiConnector;
+use Canva\Canva;
 use Saloon\Http\Response;
 
-$client = new CanvaApiConnector('access-token');
+$client = (new Canva('client_id', 'client_secret', 'redirect_uri'))->authenticateWithToken('access_token');
 
 test('can create a design', function () use ($client) {
     $design = $client->user()->profile();
