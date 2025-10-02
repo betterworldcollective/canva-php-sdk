@@ -19,7 +19,7 @@ class CanvaAuthConnector extends Connector
     private ?string $codeChallenge = null;
 
     /**
-     * Create a new CanvaOAuth instance.
+     * Create a new CanvaAuthConnector instance.
      *
      * @param string $clientId The client ID for the OAuth application.
      * @param string $clientSecret The client secret for the OAuth application.

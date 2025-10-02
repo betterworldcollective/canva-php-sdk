@@ -55,7 +55,7 @@ trait VerifiesToken
                 $keyData['alg'] = 'EdDSA';
             }
 
-            if (isset($keyData['kid'])) {
+            if (isset($keyData['kid']) && is_string($keyData['kid'])) {
                 $jwkSet[$keyData['kid']] = $keyData;
             }
         }
