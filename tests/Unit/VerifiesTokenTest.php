@@ -2,15 +2,13 @@
 
 namespace Canva\Tests\Unit;
 
-use Canva\Canva;
+use Canva\CanvaAuthConnector;
 use Canva\Data\App\EdDsaJwk;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 beforeEach(function () {
-    $this->canva = new class extends Canva {
-        // Anonymous class to test the abstract Canva class
-    };
+    $this->canva = (new CanvaAuthConnector('client-id', 'client-secret', 'redirect-uri'));
 });
 
 test('verifyToken method exists and can be called', function () {

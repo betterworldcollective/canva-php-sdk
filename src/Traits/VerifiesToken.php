@@ -39,7 +39,7 @@ trait VerifiesToken
 
     /**
      * Get the JWK set from the keys.
-     * 
+     *
      * @param (EdDsaJwkData|object)[] $keys
      * @return array{keys: EdDsaJwkData[]}
      */

@@ -1,15 +1,10 @@
 <?php
 
-use Canva\Canva;
+use Canva\CanvaApiConnector;
 use Canva\Data\Designs\Design;
 use Canva\Enums\DesignType;
-use Saloon\Http\Response;
-use Saloon\Http\Faking\MockClient;
-use Saloon\Http\Faking\MockResponse;
-use Canva\Requests\Design\CreateDesign;
-use Canva\Enums\ExportFormatType;
 
-$client = Canva::oauth('client-id', 'client-secret', 'redirect-uri')->authenticateWithToken('access-token');
+$client = new CanvaApiConnector('access-token');
 
 test('can create a design', function () use ($client) {
     $design = $client->design()->create([

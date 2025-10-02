@@ -2,6 +2,7 @@
 
 namespace Canva\Tests\Unit\Requests\App;
 
+use Canva\CanvaAuthConnector;
 use Canva\Requests\App\GetKeys;
 use Canva\Data\App\Key;
 use Saloon\Enums\Method;
@@ -43,9 +44,9 @@ test('can create dto from response', function () {
         ], 200)
     ]);
 
-    $connector = new \Canva\Authentications\CanvaOAuth('client-id', 'client-secret', 'redirect-uri');
+    $connector = new CanvaAuthConnector('client-id', 'client-secret', 'redirect-uri');
     $connector->withMockClient($mockClient);
-    
+
     $response = $connector->send(new GetKeys());
     $dto = $response->dto();
 
@@ -54,7 +55,7 @@ test('can create dto from response', function () {
     expect($dto->keys[0]->kid)->toBe('test-key-1');
     expect($dto->keys[0]->kty)->toBe('EC');
     expect($dto->keys[0]->crv)->toBe('P-256');
-    
+
     $mockClient->assertSent(GetKeys::class);
     $mockClient->assertSentCount(1);
 });

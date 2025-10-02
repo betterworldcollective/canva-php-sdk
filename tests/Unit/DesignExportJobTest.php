@@ -1,11 +1,10 @@
 <?php
 
-use Canva\Canva;
+use Canva\CanvaApiConnector;
 use Canva\Data\Exports\DesignExportJob;
 use Canva\Enums\ExportFormatType;
-use Saloon\Http\Response;
 
-$client = Canva::oauth('client-id', 'client-secret', 'redirect-uri')->authenticateWithToken('access-token');
+$client = new CanvaApiConnector('access-token');
 
 
 test('can create a design export job', function () use ($client) {

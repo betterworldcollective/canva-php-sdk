@@ -1,17 +1,19 @@
 <?php
 
-namespace Canva\Authentications;
+namespace Canva;
 
-use Canva\Canva;
 use Canva\Requests\OAuth\CanvaAccessToken;
 use Canva\Requests\OAuth\RefreshAccessToken;
+use Canva\Traits\VerifiesToken;
 use Saloon\Helpers\OAuth2\OAuthConfig;
+use Saloon\Http\Connector;
 use Saloon\Http\Request;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 
-class CanvaOAuth extends Canva
+class CanvaAuthConnector extends Connector
 {
     use AuthorizationCodeGrant;
+    use VerifiesToken;
 
     private ?string $codeVerifier = null;
     private ?string $codeChallenge = null;
@@ -30,7 +32,6 @@ class CanvaOAuth extends Canva
     ) {
         $this->oauthConfig()
             ->setClientId($clientId)
-            ->setDefaultScopes(['asset:read', 'asset:write', 'design:content:read', 'design:content:write', 'design:meta:read', 'brandtemplate:content:read', 'brandtemplate:meta:read', 'profile:read'])
             ->setClientSecret($clientSecret)
             ->setRedirectUri($redirectUri);
     }
@@ -42,28 +43,41 @@ class CanvaOAuth extends Canva
      */
     protected function defaultOauthConfig(): OAuthConfig
     {
-        return OAuthConfig::make()->setAuthorizeEndpoint('https://www.canva.com/api/oauth/authorize');
+        return OAuthConfig::make()
+            ->setAuthorizeEndpoint('https://www.canva.com/api/oauth/authorize')
+            ->setDefaultScopes([
+                'asset:read',
+                'asset:write',
+                'design:content:read',
+                'design:content:write',
+                'design:meta:read',
+                'brandtemplate:content:read',
+                'brandtemplate:meta:read',
+                'profile:read'
+            ]);
     }
 
     /**
-     * Resolve the access token request for the OAuth flow.
+     * The base URL for the Canva API.
      *
-     * @param string $code The authorization code received from the OAuth flow.
-     * @param OAuthConfig $oauthConfig The OAuth configuration containing client ID, secret, and redirect URI.
-     * @return Request
+     * @return string
      */
-    protected function resolveAccessTokenRequest(string $code, OAuthConfig $oauthConfig): Request
+    public function resolveBaseUrl(): string
     {
-        if (empty($this->codeVerifier)) {
-            throw new \InvalidArgumentException('Code verifier must not be empty when using PKCE.');
-        }
-
-        return new CanvaAccessToken($code, $oauthConfig, $this->codeVerifier);
+        return 'https://api.canva.com/rest/';
     }
 
-    protected function resolveRefreshTokenRequest(OAuthConfig $oauthConfig, string $refreshToken): Request
+    /**
+     * The default headers for the Canva API requests.
+     *
+     * @return array<string, string>
+     */
+    public function defaultHeaders(): array
     {
-        return new RefreshAccessToken($oauthConfig, $refreshToken);
+        return [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
     }
 
     /**
@@ -119,5 +133,26 @@ class CanvaOAuth extends Canva
         $this->setCodeChallenge($codeVerifier);
 
         return $this;
+    }
+
+    /**
+     * Resolve the access token request for the OAuth flow.
+     *
+     * @param string $code The authorization code received from the OAuth flow.
+     * @param OAuthConfig $oauthConfig The OAuth configuration containing client ID, secret, and redirect URI.
+     * @return Request
+     */
+    protected function resolveAccessTokenRequest(string $code, OAuthConfig $oauthConfig): Request
+    {
+        if (empty($this->codeVerifier)) {
+            throw new \InvalidArgumentException('Code verifier must not be empty when using PKCE.');
+        }
+
+        return new CanvaAccessToken($code, $oauthConfig, $this->codeVerifier);
+    }
+
+    protected function resolveRefreshTokenRequest(OAuthConfig $oauthConfig, string $refreshToken): Request
+    {
+        return new RefreshAccessToken($oauthConfig, $refreshToken);
     }
 }
