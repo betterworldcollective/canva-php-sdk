@@ -4,7 +4,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "saloonphp/saloon": "^3.14",
+        "saloonphp/saloon": "^3.6",
         "illuminate/collections": "^11.0.8 | ^12.7",
         "illuminate/support": "^11.0.8 | ^12.7",
         "firebase/php-jwt": "^6.11"
@@ -13,7 +13,8 @@
         "laravel/pint": "^1.23",
         "pestphp/pest": "^3.8",
         "phpstan/phpstan": "^2.1",
-        "rector/rector": "^2.1"
+        "rector/rector": "^2.1",
+        "phpunit/phpunit": "^11.5"
     },
     "minimum-stability": "stable",
     "autoload": {
