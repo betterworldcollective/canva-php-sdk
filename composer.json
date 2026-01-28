@@ -4,7 +4,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "saloonphp/saloon": "^3.6",
+        "saloonphp/saloon": "^3.14",
         "illuminate/collections": "^11.0.8 | ^12.7",
         "illuminate/support": "^11.0.8 | ^12.7",
         "firebase/php-jwt": "^6.11"
