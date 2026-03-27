@@ -50,6 +50,7 @@ class Canva extends Connector
     {
         return OAuthConfig::make()
             ->setAuthorizeEndpoint('https://www.canva.com/api/oauth/authorize')
+            ->setAllowBaseUrlOverride()
             ->setDefaultScopes([
                 'asset:read',
                 'asset:write',
