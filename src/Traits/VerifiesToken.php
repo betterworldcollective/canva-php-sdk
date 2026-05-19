@@ -23,10 +23,10 @@ trait VerifiesToken
      * @param (EdDsaJwkData|object)[] $keys
      * @param string $appId The expected app / client ID to verify against the token's payload.
      */
-    public function verifyToken(string $correlationJwt, array $keys, string $appId): \stdClass
+    public static function verifyToken(string $correlationJwt, array $keys, string $appId): \stdClass
     {
         // Parse the JWK set and decode the JWT
-        $parsedKeys = JWK::parseKeySet($this->getJwkSet($keys));
+        $parsedKeys = JWK::parseKeySet(self::getJwkSet($keys));
         $decoded = JWT::decode($correlationJwt, $parsedKeys);
 
         // Optionally verify the app_id if it's in the payload
@@ -43,7 +43,7 @@ trait VerifiesToken
      * @param (EdDsaJwkData|object)[] $keys
      * @return array{keys: EdDsaJwkData[]}
      */
-    private function getJwkSet(array $keys): array
+    private static function getJwkSet(array $keys): array
     {
         /** @var array<string, EdDsaJwkData> $jwkSet */
         $jwkSet = [];

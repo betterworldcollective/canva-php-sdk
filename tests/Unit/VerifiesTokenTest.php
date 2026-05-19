@@ -7,21 +7,17 @@ use Canva\Data\App\EdDsaJwk;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-beforeEach(function () {
-    $this->canva = (new Canva('client-id', 'client-secret', 'redirect-uri'));
-});
-
 test('verifyToken method exists and can be called', function () {
-    // Test that the method exists on the Canva class
-    expect(method_exists($this->canva, 'verifyToken'))->toBeTrue()
-        ->and(method_exists($this->canva, 'getJwkSet'))->toBeTrue();
+    expect(method_exists(Canva::class, 'verifyToken'))->toBeTrue()
+        ->and(method_exists(Canva::class, 'getJwkSet'))->toBeTrue();
 });
 
 test('verifyToken method signature is correct', function () {
-    $reflection = new \ReflectionClass($this->canva);
+    $reflection = new \ReflectionClass(Canva::class);
     $method = $reflection->getMethod('verifyToken');
 
     expect($method->isPublic())->toBeTrue()
+        ->and($method->isStatic())->toBeTrue()
         ->and($method->getNumberOfParameters())->toBe(3);
 
     $params = $method->getParameters();
@@ -47,11 +43,11 @@ test('getJwkSet correctly formats keys for JWT verification', function () {
     ];
 
     // Use reflection to test the private method
-    $reflection = new \ReflectionClass($this->canva);
+    $reflection = new \ReflectionClass(Canva::class);
     $method = $reflection->getMethod('getJwkSet');
     $method->setAccessible(true);
 
-    $result = $method->invoke($this->canva, $keys);
+    $result = $method->invoke(null, $keys);
 
     expect($result)->toBeArray()
         ->and($result)->toHaveKey('keys')
@@ -82,11 +78,11 @@ test('getJwkSet handles keys without kid gracefully', function () {
         ]
     ];
 
-    $reflection = new \ReflectionClass($this->canva);
+    $reflection = new \ReflectionClass(Canva::class);
     $method = $reflection->getMethod('getJwkSet');
     $method->setAccessible(true);
 
-    $result = $method->invoke($this->canva, $keys);
+    $result = $method->invoke(null, $keys);
 
     expect($result)->toBeArray()
         ->and($result)->toHaveKey('keys')
@@ -105,11 +101,11 @@ test('getJwkSet processes EdDsaJwk objects correctly', function () {
 
     $keys = [$edDsaJwk];
 
-    $reflection = new \ReflectionClass($this->canva);
+    $reflection = new \ReflectionClass(Canva::class);
     $method = $reflection->getMethod('getJwkSet');
     $method->setAccessible(true);
 
-    $result = $method->invoke($this->canva, $keys);
+    $result = $method->invoke(null, $keys);
 
     expect($result)->toBeArray()
         ->and($result)->toHaveKey('keys')
