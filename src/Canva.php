@@ -2,11 +2,12 @@
 
 namespace Canva;
 
+use Canva\Data\App\Key;
+use Canva\Requests\App\GetKeys;
 use Canva\Requests\OAuth\CanvaAccessToken;
 use Canva\Requests\OAuth\RefreshAccessToken;
 use Canva\Resources\DesignExportJobResource;
 use Canva\Resources\DesignResource;
-use Canva\Resources\KeyResource;
 use Canva\Resources\UserResource;
 use Canva\Traits\VerifiesToken;
 use Saloon\Helpers\OAuth2\OAuthConfig;
@@ -184,8 +185,18 @@ class Canva extends Connector
         return new UserResource($this);
     }
 
-    public function keys(): KeyResource
+    /**
+     * Fetch Canva's public JWKs without instantiating a connector. The keys
+     * endpoint is unauthenticated, so this dispatches a SoloRequest directly.
+     *
+     * @throws \Saloon\Exceptions\Request\FatalRequestException
+     * @throws \Saloon\Exceptions\Request\RequestException
+     * @throws \JsonException
+     */
+    public static function getPublicKeys(): Key
     {
-        return new KeyResource($this);
+        $request = new GetKeys();
+
+        return $request->createDtoFromResponse($request->send());
     }
 }
