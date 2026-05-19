@@ -7,23 +7,22 @@ use Canva\Data\App\EdDsaJwk;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-test('verifyToken method exists and can be called', function () {
-    expect(method_exists(Canva::class, 'verifyToken'))->toBeTrue()
+test('decodeJwt method exists and can be called', function () {
+    expect(method_exists(Canva::class, 'decodeJwt'))->toBeTrue()
         ->and(method_exists(Canva::class, 'getJwkSet'))->toBeTrue();
 });
 
-test('verifyToken method signature is correct', function () {
+test('decodeJwt method signature is correct', function () {
     $reflection = new \ReflectionClass(Canva::class);
-    $method = $reflection->getMethod('verifyToken');
+    $method = $reflection->getMethod('decodeJwt');
 
     expect($method->isPublic())->toBeTrue()
         ->and($method->isStatic())->toBeTrue()
-        ->and($method->getNumberOfParameters())->toBe(3);
+        ->and($method->getNumberOfParameters())->toBe(2);
 
     $params = $method->getParameters();
     expect($params[0]->getName())->toBe('correlationJwt')
-        ->and($params[1]->getName())->toBe('keys')
-        ->and($params[2]->getName())->toBe('appId');
+        ->and($params[1]->getName())->toBe('keys');
 });
 
 test('getJwkSet correctly formats keys for JWT verification', function () {
