@@ -191,9 +191,12 @@ class Canva extends Connector
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
+     * @throws \JsonException
      */
     public static function getPublicKeys(): Key
     {
-        return (new GetKeys())->send()->dto();
+        $request = new GetKeys();
+
+        return $request->createDtoFromResponse($request->send());
     }
 }
