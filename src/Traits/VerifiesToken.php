@@ -9,6 +9,7 @@ use Exception;
 use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Collection;
+use stdClass;
 
 /**
  * Trait to verify JWT tokens using a set of JWK keys.
@@ -18,23 +19,17 @@ use Illuminate\Support\Collection;
 trait VerifiesToken
 {
     /**
-     * @throws Exception
      * @param string $correlationJwt The JWT token to verify.
      * @param (EdDsaJwkData|object)[] $keys
-     * @param string $appId The expected app / client ID to verify against the token's payload.
+     * @return stdClass
+     * @throws Exception
      */
-    public static function verifyToken(string $correlationJwt, array $keys, string $appId): \stdClass
+    public static function decodeJwt(string $correlationJwt, array $keys): \stdClass
     {
         // Parse the JWK set and decode the JWT
         $parsedKeys = JWK::parseKeySet(self::getJwkSet($keys));
-        $decoded = JWT::decode($correlationJwt, $parsedKeys);
 
-        // Optionally verify the app_id if it's in the payload
-        if (property_exists($decoded, 'aud') && $decoded->aud !== $appId) {
-            throw new \Exception('App ID mismatch in JWT payload');
-        }
-
-        return $decoded;
+        return JWT::decode($correlationJwt, $parsedKeys);
     }
 
     /**
