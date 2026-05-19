@@ -116,8 +116,8 @@ The SDK provides functionality to verify JWT tokens using Canva's public keys. T
 - Implementing secure webhook handling
 
 ```php
-// Get Canva's public keys
-$keys = $canva->keys()->get();
+// Get Canva's public keys (unauthenticated endpoint — no connector needed)
+$keys = Canva::getPublicKeys();
 
 // Verify a JWT token
 $decodedToken = $canva->verifyToken(

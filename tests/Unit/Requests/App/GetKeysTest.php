@@ -3,8 +3,8 @@
 namespace Canva\Tests\Unit\Requests\App;
 
 use Canva\Canva;
-use Canva\Requests\App\GetKeys;
 use Canva\Data\App\Key;
+use Canva\Requests\App\GetKeys;
 use Saloon\Enums\Method;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
@@ -17,10 +17,10 @@ test('constructor creates instance', function () {
     expect($this->request)->toBeInstanceOf(GetKeys::class);
 });
 
-test('resolve endpoint', function () {
+test('resolve endpoint returns full url', function () {
     $endpoint = $this->request->resolveEndpoint();
 
-    expect($endpoint)->toBe('v1/connect/keys');
+    expect($endpoint)->toBe('https://api.canva.com/rest/v1/connect/keys');
 });
 
 test('method is GET', function () {
@@ -44,10 +44,7 @@ test('can create dto from response', function () {
         ], 200)
     ]);
 
-    $connector = new Canva('client-id', 'client-secret', 'redirect-uri');
-    $connector->withMockClient($mockClient);
-
-    $response = $connector->send(new GetKeys());
+    $response = (new GetKeys())->send($mockClient);
     $dto = $response->dto();
 
     expect($dto)->toBeInstanceOf(Key::class);
@@ -58,4 +55,11 @@ test('can create dto from response', function () {
 
     $mockClient->assertSent(GetKeys::class);
     $mockClient->assertSentCount(1);
+});
+
+test('static getPublicKeys sends without a connector', function () {
+    $dto = Canva::getPublicKeys();
+
+    expect($dto)->toBeInstanceOf(Key::class);
+    expect($dto->keys[0]->kid)->toBe('k1');
 });
