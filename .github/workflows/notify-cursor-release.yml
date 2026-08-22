@@ -1,0 +1,29 @@
+name: Notify Cursor release notes
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify-cursor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: POST release payload to Cursor webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.CURSOR_AUTOMATION_WEBHOOK_URL }}
+          WEBHOOK_KEY: ${{ secrets.CURSOR_AUTOMATION_WEBHOOK_KEY }}
+          PAYLOAD: ${{ toJson(github.event) }}
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK_URL}" ] || [ -z "${WEBHOOK_KEY}" ]; then
+            echo "Missing CURSOR_AUTOMATION_WEBHOOK_URL or CURSOR_AUTOMATION_WEBHOOK_KEY"
+            exit 1
+          fi
+          curl -fsS -X POST "$WEBHOOK_URL" \
+            -H "Authorization: Bearer ${WEBHOOK_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "X-GitHub-Event: release" \
+            -H "X-GitHub-Delivery: ${{ github.run_id }}" \
+            --data-binary "$PAYLOAD"
