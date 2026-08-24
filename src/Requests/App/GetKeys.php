@@ -3,7 +3,8 @@
 namespace Canva\Requests\App;
 
 use Canva\Data\App\Key;
-use JsonException;
+use Canva\Exceptions\CanvaApiException;
+use Canva\Traits\DecodesResponses;
 use Saloon\Enums\Method;
 use Saloon\Http\Response;
 use Saloon\Http\SoloRequest;
@@ -19,21 +20,22 @@ use Saloon\Http\SoloRequest;
  */
 class GetKeys extends SoloRequest
 {
-	protected Method $method = Method::GET;
+    use DecodesResponses;
 
+    protected Method $method = Method::GET;
 
-	public function resolveEndpoint(): string
-	{
-		return 'https://api.canva.com/rest/v1/connect/keys';
-	}
+    public function resolveEndpoint(): string
+    {
+        return 'https://api.canva.com/rest/v1/connect/keys';
+    }
 
     /**
-     * @throws JsonException
+     * @throws CanvaApiException
      */
     public function createDtoFromResponse(Response $response): Key
     {
         /** @var KeyData $responseBody */
-        $responseBody = $response->json();
+        $responseBody = $this->payload($response);
 
         return Key::from($responseBody);
     }

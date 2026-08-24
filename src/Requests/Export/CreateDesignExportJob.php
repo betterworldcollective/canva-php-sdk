@@ -3,7 +3,8 @@
 namespace Canva\Requests\Export;
 
 use Canva\Data\Exports\DesignExportJob;
-use JsonException;
+use Canva\Exceptions\CanvaApiException;
+use Canva\Traits\DecodesResponses;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -57,20 +58,20 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class CreateDesignExportJob extends Request implements HasBody
 {
+    use DecodesResponses;
     use HasJsonBody;
 
     protected Method $method = Method::POST;
 
-
     public function resolveEndpoint(): string
     {
-        return "/v1/exports";
+        return '/v1/exports';
     }
 
     /**
      * CreateDesignExportJob constructor.
      *
-     * @param ExportFormat $properties
+     * @param  ExportFormat  $properties
      */
     public function __construct(protected array $properties)
     {
@@ -101,13 +102,12 @@ class CreateDesignExportJob extends Request implements HasBody
     }
 
     /**
-     * @throws JsonException
+     * @throws CanvaApiException
      */
     public function createDtoFromResponse(Response $response): DesignExportJob
     {
-        $data = $response->json();
         /** @var DesignExportJobDataResponse $job */
-        $job = $data['job'];
+        $job = $this->payload($response, 'job');
 
         return DesignExportJob::from($job);
     }

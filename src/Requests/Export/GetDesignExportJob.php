@@ -3,7 +3,8 @@
 namespace Canva\Requests\Export;
 
 use Canva\Data\Exports\DesignExportJob;
-use JsonException;
+use Canva\Exceptions\CanvaApiException;
+use Canva\Traits\DecodesResponses;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -24,6 +25,7 @@ use Saloon\Http\Response;
  * or `failed` status. For more information on the workflow for using asynchronous jobs, see [API
  * requests and
  * responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints).
+ *
  * @phpstan-import-type ErrorDataResponse from \Canva\Data\Exports\Error
  *
  * @phpstan-type DesignExportJobDataResponse array{
@@ -35,32 +37,29 @@ use Saloon\Http\Response;
  */
 class GetDesignExportJob extends Request
 {
-    protected Method $method = Method::GET;
+    use DecodesResponses;
 
+    protected Method $method = Method::GET;
 
     public function resolveEndpoint(): string
     {
         return "/v1/exports/{$this->exportId}";
     }
 
-
     /**
-     * @param string $exportId The export job ID.
+     * @param  string  $exportId  The export job ID.
      */
     public function __construct(
         protected string $exportId,
-    ) {
-    }
+    ) {}
 
     /**
-     * @throws JsonException
+     * @throws CanvaApiException
      */
     public function createDtoFromResponse(Response $response): DesignExportJob
     {
-        $responseBody = $response->json();
-
         /** @var DesignExportJobDataResponse $job */
-        $job = $responseBody['job'];
+        $job = $this->payload($response, 'job');
 
         return DesignExportJob::from($job);
     }
