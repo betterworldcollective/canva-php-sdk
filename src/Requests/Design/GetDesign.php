@@ -3,6 +3,8 @@
 namespace Canva\Requests\Design;
 
 use Canva\Data\Designs\Design;
+use Canva\Exceptions\CanvaApiException;
+use Canva\Traits\DecodesResponses;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
@@ -16,7 +18,7 @@ use Saloon\Http\Response;
  * @phpstan-import-type OwnerDataResponse from \Canva\Data\Designs\Owner
  * @phpstan-import-type UrlsDataResponse from \Canva\Data\Designs\Urls
  * @phpstan-import-type ThumbnailDataResponse from \Canva\Data\Designs\Thumbnail
- * 
+ *
  * @phpstan-type DesignDataResponse array{
  *     id: string,
  *     title: string,
@@ -30,29 +32,29 @@ use Saloon\Http\Response;
  */
 class GetDesign extends Request
 {
-	protected Method $method = Method::GET;
+    use DecodesResponses;
+
+    protected Method $method = Method::GET;
 
     /**
-	 * @param string $designId The design ID.
-	 */
-	public function __construct(
-		protected string $designId,
-	) {
-	}
+     * @param  string  $designId  The design ID.
+     */
+    public function __construct(
+        protected string $designId,
+    ) {}
 
-	public function resolveEndpoint(): string
-	{
-		return "/v1/designs/{$this->designId}";
-	}
+    public function resolveEndpoint(): string
+    {
+        return "/v1/designs/{$this->designId}";
+    }
 
     /**
-     * @throws \JsonException
+     * @throws CanvaApiException
      */
     public function createDtoFromResponse(Response $response): Design
     {
-        $responseBody = $response->json();
         /** @var DesignDataResponse $design */
-        $design = $responseBody['design'];
+        $design = $this->payload($response, 'design');
 
         return Design::from($design);
     }

@@ -3,7 +3,8 @@
 namespace Canva\Requests\Design;
 
 use Canva\Data\Designs\Design;
-use JsonException;
+use Canva\Exceptions\CanvaApiException;
+use Canva\Traits\DecodesResponses;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -47,14 +48,14 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class CreateDesign extends Request implements HasBody
 {
+    use DecodesResponses;
     use HasJsonBody;
 
     protected Method $method = Method::POST;
 
-
     public function resolveEndpoint(): string
     {
-        return "/v1/designs";
+        return '/v1/designs';
     }
 
     /**
@@ -88,13 +89,12 @@ class CreateDesign extends Request implements HasBody
     }
 
     /**
-     * @throws JsonException
+     * @throws CanvaApiException
      */
     public function createDtoFromResponse(Response $response): Design
     {
-        $responseBody = $response->json();
         /** @var DesignDataResponse $design */
-        $design = $responseBody['design'];
+        $design = $this->payload($response, 'design');
 
         return Design::from($design);
     }
