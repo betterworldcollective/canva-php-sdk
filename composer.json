@@ -5,8 +5,8 @@
     "require": {
         "php": "^8.2",
         "saloonphp/saloon": "^4.0",
-        "illuminate/collections": "^11.0.8 | ^12.7",
-        "illuminate/support": "^11.0.8 | ^12.7",
+        "illuminate/collections": "^11.0.8 | ^12.7 | ^13.0",
+        "illuminate/support": "^11.0.8 | ^12.7 | ^13.0",
         "firebase/php-jwt": "^7.0"
     },
     "require-dev": {
